@@ -1,101 +1,65 @@
 import "./App.css";
-import {
-  Button,
-  ButtonGroup,
-  Container,
-  Form,
-  Grid,
-  Header,
-  Icon,
-  Segment,
-  Statistic,
-} from "semantic-ui-react";
+import { Container, Grid, Segment } from "semantic-ui-react";
+import MainHeader from "./components/MainHeader";
+
+import NewEntryForm from "./components/NewEntryForm";
+import DisplayBalance from "./components/DisplayBalance";
+import EntryLine from "./components/EntryLine";
 
 function App() {
+  const dummyData = [
+    {
+      type: true,
+      balance: 5000,
+    },
+    {
+      type: false,
+      balance: 3000,
+    },
+  ];
+  const moreDummyData = [
+    {
+      type: true,
+      description: "salary",
+      amount: "5000",
+    },
+    {
+      type: false,
+      description: "boxers",
+      amount: "250",
+    },
+  ];
   return (
     <Container>
-      <Header as="h1">Budget</Header>
-      <Statistic size="small">
-        <Statistic.Label>Your Balance</Statistic.Label>
-        <Statistic.Value>2558.53</Statistic.Value>
-      </Statistic>
+      <MainHeader title="budget" type="h1" />
+
+      <DisplayBalance balance={"2558.53"} size="small" />
       <Segment textAlign="center">
         <Grid columns="2">
           <Grid.Row>
-            <Grid.Column>
-              <Statistic size="tiny" color="green">
-                <Statistic.Label style={{ textAlign: "left" }}>
-                  Income
-                </Statistic.Label>
-                <Statistic.Value>1,045</Statistic.Value>
-              </Statistic>
-            </Grid.Column>
-            <Grid.Column>
-              <Statistic size="tiny" color="red">
-                <Statistic.Label style={{ textAlign: "left" }}>
-                  Outgoing
-                </Statistic.Label>
-                <Statistic.Value>5000</Statistic.Value>
-              </Statistic>
-            </Grid.Column>
+            {dummyData.map((data) => (
+              <Grid.Column>
+                <DisplayBalance
+                  color={data.type ? "green" : "red"}
+                  type={data.type}
+                  balance={data.balance}
+                />
+              </Grid.Column>
+            ))}
           </Grid.Row>
         </Grid>
       </Segment>
-      <Header as="h3">History</Header>
-      <Segment color="red">
-        <Grid columns="3" textAlign="right">
-          <Grid.Row>
-            <Grid.Column width="10" textAlign="left">
-              Boxer
-            </Grid.Column>
-            <Grid.Column width="3" textAlign="right">
-              10$
-            </Grid.Column>
-            <Grid.Column width="3">
-              <Icon name="edit" />
-              <Icon name="trash" />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <Segment color="green">
-        <Grid columns="3" textAlign="right">
-          <Grid.Row>
-            <Grid.Column width="10" textAlign="left">
-              Free Money
-            </Grid.Column>
-            <Grid.Column width="3" textAlign="right">
-              10$
-            </Grid.Column>
-            <Grid.Column width="3">
-              <Icon name="edit" />
-              <Icon name="trash" />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <Header as="h3">Add new transaction</Header>
-      <Form>
-        <Form.Group>
-          <Form.Input
-            label="description"
-            icon="tags"
-            width="12"
-            placeholder="new shiny thing"
-          />
-          <Form.Input
-            placeholder="100"
-            icon="dollar"
-            iconPosition="left"
-            label="amount"
-          />
-        </Form.Group>
-        <ButtonGroup style={{ marginTop: "2em" }}>
-          <Button>Cancel</Button>
-          <Button.Or />
-          <Button primary>Save</Button>
-        </ButtonGroup>
-      </Form>
+      <MainHeader type="h3" title="History" />
+
+      {moreDummyData.map((value) => (
+        <EntryLine
+          description={value.description}
+          value={value.amount}
+          type={value.type}
+        />
+      ))}
+      <MainHeader type="h3" title="Add new transaction" />
+      <NewEntryForm />
     </Container>
   );
 }
